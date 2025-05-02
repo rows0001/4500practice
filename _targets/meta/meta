@@ -1,4 +1,14 @@
 name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
 data|stem|289c03b8edc57108|471f4c50e8eb2dc6|2c530c1562a7fbd1|33550471||t20209.2991297597s|s448b|448|rds|local|vector|||0||
 data_summary|stem|64a52c31eb1953c5|2e4ea7419356bab6|6fed6e4efb7d29c0|-651121042||t20209.2991312164s|s87b|87|rds|local|vector|||0||
-summarize_data|function|dc619228d9319364
+summarize_data|function|dc619228d9319364|||||||||||||||
+raw_data|stem|fa6909122b087e5e|818bbfdaa7917295|2c530c1562a7fbd1|-1101284392||t20210.6015184885s|s53639b|53639|rds|local|vector|||0.85|package 'stringr' was built under R version 4.3.3|
+clean_data|stem|1f66ce702dc689d0|e7b42126ed01608a|456949d6c3499aff|-259385813||t20210.6203121964s|s1528b|1528|rds|local|vector|||0.02||
+plot1|stem|0d138d65cefbd0ad|2b576f0af1e3fd1e|e95d0573ea7929e1|-1880136255||t20210.6203129993s|s107609b|107609|rds|local|vector|||0||
+plot2|stem|b80918672000c6cb|627b6a413bc796ed|14eb52ddbfdc3c35|-1544046761||t20210.6203142022s|s138497b|138497|rds|local|vector|||0.02||
+model_fit|stem|7e1ff72b0708cb1a|54fab90232eec891|13a3cc9090ff7e95|-835394603||t20210.6222127094s|s24080b|24080|rds|local|vector|||0.03||
+model_summary|stem|10dfc7e707d5fb6f|15f4540333717d2e|8157476c20de6390|-1088889063||t20210.62221335s|s1098b|1098|rds|local|vector|||0.01||
+fit_model|function|ad15c3f3d1dc10f3
+make_plot1|function|175bb7fa440d95d5
+make_plot2|function|2e108b6b02d5c491
+clean_and_wrangle|function|f5b23268aeff2c1a

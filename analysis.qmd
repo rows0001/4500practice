@@ -1,0 +1,123 @@
+---
+title: "practice_3"
+format: html
+editor: visual
+---
+
+```{r, warning=FALSE, message=FALSE}
+library(readr)
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+```
+
+```{r}
+gdp_vs_happiness <- read_csv("data/gdp-vs-happiness.csv")
+```
+
+```{r}
+colnames(gdp_vs_happiness)
+```
+
+```{r}
+unique(gdp_vs_happiness$`World regions according to OWID`)
+```
+
+```{r}
+n_distinct(gdp_vs_happiness$Entity)
+
+```
+
+## data cleaning
+
+```{r}
+gdp_happiness_clean <- gdp_vs_happiness |>
+  rename(
+    Country = Entity,
+    "Life satisfaction" = "Cantril ladder score"
+  ) |>
+  select(Country, Year, 'Life satisfaction', 'GDP per capita, PPP (constant 2021 international $)') |>
+  dplyr::filter(Country %in% c("Canada", "France", "Germany", "Italy", "Japan", "Russia", "United States", "United Kingdom", "Australia")) |>
+  drop_na()
+```
+
+
+```{r}
+colnames(gdp_happiness_clean)
+```
+
+
+
+##Box plot:
+
+```{r}
+ggplot(gdp_happiness_clean, aes(x = Country, y = `Life satisfaction`, fill = Country)) + 
+  geom_boxplot() + 
+  labs(title = "Boxplot of life satisfaction across countries",
+       x = "Country",
+       y = "Life Satisfaction") + 
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+ggplot(gdp_happiness_clean, aes(x = Year)) +
+  geom_line(aes(y = `Life satisfaction`, color = "Life satisfaction"), linewidth = 1) +
+  geom_line(aes(y = `GDP per capita, PPP (constant 2021 international $)` / 10000, color = "GDP per capita"), linewidth = 1) +
+  facet_wrap(~ Country) +
+  labs(title = "Life Satisfaction and GDP per Capita Over Time",
+       x = "Year",
+       y = "Value (GDP scaled by 1/10000)",
+       color = "Variable") +
+  scale_color_manual(values = c("Life satisfaction" = "blue", "GDP per capita" = "red")) +
+  theme_minimal()
+
+```
+
+```{r}
+library(GGally)
+```
+
+```{r}
+cor_data <- gdp_happiness_clean |>
+  select(`Life satisfaction`, `GDP per capita, PPP (constant 2021 international $)`)
+
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(gdp_happiness_clean, 
+       aes(x = `GDP per capita, PPP (constant 2021 international $)`, 
+           y = `Life satisfaction`)) +
+  geom_point(alpha = 0.6, color = "steelblue") +
+  geom_smooth(method = "lm", se = FALSE, color = "darkred") +
+  facet_wrap(~ Country) +
+  labs(
+    title = "Relationship between GDP per Capita and Life Satisfaction by Country",
+    x = "GDP per Capita (constant 2021 international $)",
+    y = "Life Satisfaction"
+  ) +
+  theme_minimal()
+
+```
+
+```{r}
+library(dplyr)
+library(broom)
+
+# Fit a model per country
+model_by_country <- gdp_happiness_clean %>%
+  group_by(Country) %>%
+  do(tidy(lm(`Life satisfaction` ~ `GDP per capita, PPP (constant 2021 international $)`, data = .)))
+
+# Filter out the intercept and show only the slope for each country
+slope_by_country <- model_by_country %>%
+  dplyr::filter(term != "(Intercept)")  # Remove intercept rows
+
+# View the filtered model results
+print(slope_by_country)
+
+
+
+```
