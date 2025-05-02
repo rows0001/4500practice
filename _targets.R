@@ -1,29 +1,15 @@
 library(targets)
-# This is an example _targets.R file. Every
-# {targets} pipeline needs one.
-# Use tar_script() to create _targets.R and tar_edit()
-# to open it again for editing.
-# Then, run tar_make() to run the pipeline
-# and tar_read(data_summary) to view the results.
+library(tarchetypes)
 
-# Define custom functions and other global objects.
-# This is where you write source(\"R/functions.R\")
-# if you keep your functions in external scripts.
-summarize_data <- function(dataset) {
-  rowMeans(dataset)
-}
+source("R/functions.R")
 
-# Set target-specific options such as packages:
- tar_option_set(packages = "ggplot2") 
+tar_option_set(packages = c("tidyverse", "readr", "ggplot2", "broom"))
 
-# End this file with a list of target objects.
 list(
-  tar_target(data, data.frame(x = sample.int(100), y = sample.int(100))),
-  tar_target(data_summary, summarize_data(data)) # Call your custom functions.
+  tar_target(raw_data, read_csv("data/your_data.csv")),
+  tar_target(clean_data, clean_and_wrangle(raw_data)),
+  tar_target(plot1, make_plot1(clean_data)),
+  tar_target(plot2, make_plot2(clean_data)),
+  tar_target(model_fit, fit_model(clean_data)),
+  tar_target(model_summary, broom::tidy(model_fit))
 )
-
-# tar_target(mydata, read.csv("mydata.csv"))
-tar_target(mydata, mtcars),
-tar_target(plot, ggplot(mydata, aes(x = mpg,
-                                    y = hp)) + geom_point())
-tar_target(model, lm(hp ~ mpg, data = mydata))
