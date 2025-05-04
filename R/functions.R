@@ -7,7 +7,7 @@ clean_and_wrangle <- function(df) {
       gdp_per_capita = `GDP per capita, PPP (constant 2021 international $)`
     ) |>
     select(country, Year, life_satisfaction, gdp_per_capita) |>
-    filter(country %in% c(
+    dplyr::filter(country %in% c(
       "Canada", "France", "Germany", "Italy", "Japan",
       "Russia", "United States", "United Kingdom", "Australia"
     )) |>
